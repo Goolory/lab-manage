@@ -48,7 +48,7 @@ export default {
             //   message: 'Error',
             //   type: 'error'
             // })
-            this.$router.push({path: '/page1'})
+            this.$router.push({path: '/S/list'})
           }
         })
       }
