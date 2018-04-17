@@ -38,7 +38,8 @@
 
 <style scoped>
     .content-card {
-        margin: 0 50px
+        margin: 0 50px；
+        
     }
     .title {
         text-align: center;
