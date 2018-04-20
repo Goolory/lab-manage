@@ -7,21 +7,21 @@
         </el-card>
         <el-card class="box-card card-bottom">
             <div class="card-title">一、实验描述：</div>
-            <el-card shadow="never" class="text item content-card">
+            <div class="text item content-card">
                 验描述没啊哈忽视的回复哈啊哈速度发货安实验描述没啊哈忽视的回复哈啊哈速度发实验描述没啊哈忽视的回 验描述没啊哈忽视的回复哈啊哈速度发货安实验描述没啊哈忽视的回复哈啊哈速度发实验描述没啊哈忽视的回 验描述没啊哈忽视的回复哈啊哈速度发货安实验描述没啊哈忽视的回复哈啊哈速度发实验描述没啊哈忽视的回
-            </el-card>
+            </div>
             <div class="card-title">二、实验内容：</div>
-            <el-card shadow="never" class="text item content-card">
+            <div class="text item content-card">
                 验描述没啊哈忽视的回复哈啊哈速度发货安实验描述没啊哈忽视的回复哈啊哈速度发实验描述没啊哈忽视的回 验描述没啊哈忽视的回复哈啊哈速度发货安实验描述没啊哈忽视的回复哈啊哈速度发实验描述没啊哈忽视的回 验描述没啊哈忽视的回复哈啊哈速度发货安实验描述没啊哈忽视的回复哈啊哈速度发实验描述没啊哈忽视的回
-            </el-card>
+            </div>
             <div class="card-title">三、实验附件：</div>
-            <el-card shadow="never" class="text item content-card">
+            <div class="text item content-card">
                 验描述没啊哈忽视的回复哈啊哈速度发货安实验描述没啊哈忽视的回复哈啊哈速度发实验描述没啊哈忽视的回 验描述没啊哈忽视的回复哈啊哈速度发货安实验描述没啊哈忽视的回复哈啊哈速度发实验描述没啊哈忽视的回 验描述没啊哈忽视的回复哈啊哈速度发货安实验描述没啊哈忽视的回复哈啊哈速度发实验描述没啊哈忽视的回
-            </el-card>
+            </div>
             <div class="card-title">四、教师意见：</div>
-            <el-card shadow="never" class="text item content-card">
+            <div class="text item content-card">
                 验描述没啊哈忽视的回复哈啊哈速度发货安实验描述没啊哈忽视的回复哈啊哈速度发实验描述没啊哈忽视的回 验描述没啊哈忽视的回复哈啊哈速度发货安实验描述没啊哈忽视的回复哈啊哈速度发实验描述没啊哈忽视的回 验描述没啊哈忽视的回复哈啊哈速度发货安实验描述没啊哈忽视的回复哈啊哈速度发实验描述没啊哈忽视的回
-            </el-card>
+            </div>
         </el-card>
     </div>
 </template>
@@ -38,7 +38,7 @@
 
 <style scoped>
     .content-card {
-        margin: 0 50px；
+        margin: 0 50px;
         
     }
     .title {

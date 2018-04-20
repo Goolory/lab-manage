@@ -7,9 +7,8 @@ import studentLogin from '../views/student/studentLogin'
 const studentHome = resolve => require(['../views/student/home.vue'], resolve)
 const expList = resolve => require(['../views/student/expList.vue'], resolve)
 const expDetail = resolve => require(['../views/student/expDetail.vue'], resolve)
-const test = resolve => require(['@/components/Footer.vue'], resolve)
+const forum = resolve => require(['../views/student/forum.vue'], resolve)
 const test2 = resolve => require(['@/components/Path.vue'], resolve)
-// import test from '@/components/Footer.vue'
 
 
 
@@ -34,7 +33,10 @@ export default new Router({
       children:[
         { path: '/S/list', component: expList, name: '实验列表'},
         { path: '/S/detail', component: expDetail, name: '实验详情'},
-        { path: '/page2', component: test2, name: '课程作业'}
+        { path: '/page2', component: test2, name: '课程作业'},
+        { path: '', name:'答疑讨论',component:layout, children:[
+          { path: '/S/forum', component: forum, name: '讨论区'}
+        ]}
       ]
     }
 

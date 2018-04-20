@@ -3,8 +3,7 @@ export let studentMenu = [
     { path: '/page2', name: '课程作业', iconCls: 'el-icon-time' },
     { path: '/page5', name: '在线测试', iconCls: 'el-icon-edit' },
     { path: '', name: '答疑讨论', iconCls: 'el-icon-service',leaf: true, children: [
-        { path: '/page3', name: '提问题' },
-        { path: '/page4', name: '讨论区' },
+        { path: '/S/forum', name: '讨论区' },
         { path: '/page6', name: '留言板' },
     ] },
 ]
