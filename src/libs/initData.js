@@ -7,3 +7,13 @@ export let studentMenu = [
         { path: '/page6', name: '留言板' },
     ] },
 ]
+
+export let adminMenu = [
+    { path: '', name: '用户管理', iconCls: 'el-icon-tickets',leaf: true, children: [
+        { path: '/M/studentList', name: '学生列表' },
+        { path: '/M/teacherList', name: '教师列表' },
+    ] },
+    { path: '/M/list', name: '实验管理', iconCls: 'el-icon-setting' },
+    { path: '/page2', name: '班级管理', iconCls: 'el-icon-time' },
+    { path: '/page5', name: '留言板管理', iconCls: 'el-icon-edit' },
+]

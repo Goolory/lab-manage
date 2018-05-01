@@ -23,8 +23,8 @@
         <!--导航菜单-->
         <el-menu default-active="0" class="el-menu-vertical-demo" @open="handleopen" @close="handleclose" @select="handleselect">
           <template v-for="(item, index) in studentMenu">
-          <el-submenu :index="index+''" v-if="item.leaf">
-            <template slot="title"><i :class="item.iconCls"></i>{{item.name}}
+            <el-submenu :index="index+''" v-if="item.leaf">
+              <template slot="title"><i :class="item.iconCls"></i>{{item.name}}
 </template>
           <el-menu-item v-for="(child, i) in item.children" :index="index+'.'+i" @click="$router.push({path: child.path})">
             {{child.name}}</el-menu-item>
@@ -61,13 +61,13 @@
 
 <script>
   import {
-    studentMenu
+    adminMenu
   } from '@/libs/initData';
   export default {
     data() {
       return {
-        studentMenu: studentMenu,
-        sysName: "学生实验室",
+        studentMenu: adminMenu,
+        sysName: "系统管理",
         sysUserName: "",
         sysUserAvatar: "",
         form: {
@@ -92,31 +92,48 @@
       handleclose() {
         //console.log('handleclose');
       },
+      getCookie(name) {
+        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg)){
+          return unescape(arr[2])
+        } else {
+          return null;
+        }
+      },
+      delCookie(name){
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval = this.getCookie(name);
+        if (cval!=null) {
+          document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+        }
+      },
       handleselect: function(a, b) {},
       //退出登录
       logout: function() {
-        // var _this = this;
-        // this.$confirm('确认退出吗?', '提示', {
-        // 	//type: 'warning'
-        // }).then(() => {
-        // 	sessionStorage.removeItem('user');
-        // 	_this.$router.push('/login');
-        // }).catch(() => {
-        // });
-        console.log("退出登录");
-        this.$router.push({
-          path: "/login"
-        });
+        var _this = this;
+        this.$confirm('确认退出吗?', '提示', {
+          type: 'warning'
+        }).then(() => {
+          if (this.getCookie('admin')) {
+            this.delCookie('admin');
+            this.$store.state.isLogin = false;
+            console.log(this.$store.state.isLogin);
+            this.$router.push({
+              path: "/"
+            })
+          }
+        }).catch(() => {});
       }
     },
     mounted() {
-      // var user = sessionStorage.getItem("user");
-      // console.log(user);
-      // if (user) {
-      //   user = JSON.parse(user);
-      //   this.sysUserName = user.name || "";
-      //   this.sysUserAvatar = user.avatar || "";
-      // }
+      var user = sessionStorage.getItem("user");
+      console.log(user);
+      if (user) {
+        user = JSON.parse(user);
+        this.sysUserName = user.name || "";
+        this.sysUserAvatar = user.avatar || "";
+      }
     }
   };
 </script>

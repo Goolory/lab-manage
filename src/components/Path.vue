@@ -4,8 +4,10 @@
        <!-- <li><a href="/login">学生登录</a></li>  -->
       <!-- <li><a href="/">教师登录</a></li>
       <li><a href="/">管理员登录</a></li>  -->
-
-      <router-link to="/login">学生登录</router-link>
+      <li><router-link to="/S/login">学生登录</router-link></li>
+      <li><router-link to="/M/login">管理员登录</router-link></li>
+      
+      
     </ul>
   </div>
 </template>
@@ -21,8 +23,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.container{
+  text-align: center;
+  margin: 100px;
+}
 ul li {
-  list-style: none
+  list-style: none;
+  line-height: 40px;
 }
 </style>
