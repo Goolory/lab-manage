@@ -5,7 +5,9 @@
       <!-- <li><a href="/">教师登录</a></li>
       <li><a href="/">管理员登录</a></li>  -->
       <li><router-link to="/S/login">学生登录</router-link></li>
+      <li><router-link to="/M/login">教师登录登录</router-link></li>
       <li><router-link to="/M/login">管理员登录</router-link></li>
+      <li><a target="_blank" href="http://localhost:5001/doc/#!index.md">接口文档</a></li>
       
       
     </ul>

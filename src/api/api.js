@@ -47,4 +47,4 @@ function ajax(url, params, type = "GET", timeout = 1000) {
 }
 
 export const adminLogin = (params) => ajax(host + "/admin/login", params, "POST");
-// export const adminLogin = params => {return axios.post(host+"/admin/login", params).then(res => res.data);};
+export const adminInfo = (params) => ajax(host+'/admin/info', params, "GET");

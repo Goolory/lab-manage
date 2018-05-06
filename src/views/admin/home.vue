@@ -7,7 +7,7 @@
       </el-col>
       <el-col :span="4" class="userinfo">
         <el-dropdown trigger="hover">
-          <span class="el-dropdown-link userinfo-inner"><img src="../../assets/logo.png" /> xxx</span>
+          <span class="el-dropdown-link userinfo-inner"><img src="../../assets/logo.png" /> {{adminName}}</span>
           <!-- <span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{sysUserName}}</span> -->
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>我的消息</el-dropdown-item>
@@ -22,7 +22,7 @@
       <aside>
         <!--导航菜单-->
         <el-menu default-active="0" class="el-menu-vertical-demo" @open="handleopen" @close="handleclose" @select="handleselect">
-          <template v-for="(item, index) in studentMenu">
+          <template v-for="(item, index) in adminMenu">
             <el-submenu :index="index+''" v-if="item.leaf">
               <template slot="title"><i :class="item.iconCls"></i>{{item.name}}
 </template>
@@ -60,13 +60,13 @@
 </template>
 
 <script>
-  import {
-    adminMenu
-  } from '@/libs/initData';
+  import {adminMenu} from '@/libs/initData';
+  import { adminInfo } from '@/api/api';
   export default {
     data() {
       return {
-        studentMenu: adminMenu,
+        adminName: '',
+        adminMenu: adminMenu,
         sysName: "系统管理",
         sysUserName: "",
         sysUserAvatar: "",
@@ -82,7 +82,16 @@
         }
       };
     },
+    created() {
+      this.getAdminInfo();
+    },
     methods: {
+      getAdminInfo() {
+        adminInfo().then(res => {
+          console.log(res);
+          this.adminName = res.data.admin_name;
+        })
+      },
       onSubmit() {
         console.log('submit!');
       },
@@ -127,13 +136,13 @@
       }
     },
     mounted() {
-      var user = sessionStorage.getItem("user");
-      console.log(user);
-      if (user) {
-        user = JSON.parse(user);
-        this.sysUserName = user.name || "";
-        this.sysUserAvatar = user.avatar || "";
-      }
+      // var user = sessionStorage.getItem("user");
+      // console.log(user);
+      // if (user) {
+      //   user = JSON.parse(user);
+      //   this.sysUserName = user.name || "";
+      //   this.sysUserAvatar = user.avatar || "";
+      // }
     }
   };
 </script>
