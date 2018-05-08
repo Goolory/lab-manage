@@ -48,3 +48,6 @@ function ajax(url, params, type = "GET", timeout = 1000) {
 
 export const adminLogin = (params) => ajax(host + "/admin/login", params, "POST");
 export const adminInfo = (params) => ajax(host+'/admin/info', params, "GET");
+export const teacherList = (params) => ajax(host+'/admin/teacher/list', params, "GET");
+export const teacherAdd = (params) => ajax(host+"/admin/teacher/add", params, "POST");
+export const teacherDel = (params) => ajax(host + '/admin/teacher/delete', params, "POST");
