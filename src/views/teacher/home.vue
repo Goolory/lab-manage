@@ -7,8 +7,7 @@
       </el-col>
       <el-col :span="4" class="userinfo">
         <el-dropdown trigger="hover">
-          <span class="el-dropdown-link userinfo-inner"><img src="../../assets/logo.png" />{{studentName}}</span>
-          <!-- <span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{sysUserName}}</span> -->
+          <span class="el-dropdown-link userinfo-inner"><img src="../../assets/logo.png" /> {{teacherName}}</span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>我的消息</el-dropdown-item>
             <el-dropdown-item>设置</el-dropdown-item>
@@ -22,7 +21,7 @@
       <aside>
         <!--导航菜单-->
         <el-menu default-active="0" class="el-menu-vertical-demo" @open="handleopen" @close="handleclose" @select="handleselect">
-          <template v-for="(item, index) in studentMenu">
+          <template v-for="(item, index) in teacherMenu">
             <el-submenu :index="index+''" v-if="item.leaf">
               <template slot="title"><i :class="item.iconCls"></i>{{item.name}}
 </template>
@@ -61,17 +60,17 @@
 
 <script>
   import {
-    studentMenu
+    teacherMenu
   } from '@/libs/initData';
   import {
-    userSInfo
+    userTInfo
   } from '../../api/api'
   export default {
     data() {
       return {
-        studentMenu: studentMenu,
-        sysName: "学生实验室",
-        studentName: '',
+        teacherMenu: teacherMenu,
+        sysName: "教师管理",
+        teacherName: "",
         sysUserName: "",
         sysUserAvatar: "",
         form: {
@@ -87,14 +86,14 @@
       };
     },
     created() {
-      this.getStudentInfo();
+      this.getTeacherInfo();
     },
     methods: {
-      getStudentInfo: function() {
-        userSInfo().then(res => {
+      getTeacherInfo() {
+        userTInfo().then(res => {
           console.log(res);
-          this.studentName = res.data.student_name;
-          this.$store.state.studentId = res.data.student_id;
+          this.teacherName = res.data.teacher_name;
+          this.$store.state.teacherId = res.data.teacher_id;
         })
       },
       onSubmit() {
@@ -129,10 +128,10 @@
         this.$confirm('确认退出吗?', '提示', {
           type: 'warning'
         }).then(() => {
-          if (this.getCookie('student')) {
-            this.delCookie('student');
+          if (this.getCookie('teacher')) {
+            this.delCookie('teacher');
             this.$store.state.isLogin = false;
-            this.$store.state.studentId = 0;
+            this.$store.state.teacherId = 0;
             console.log(this.$store.state.isLogin);
             this.$router.push({
               path: "/"

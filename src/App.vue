@@ -16,12 +16,29 @@
         // token验证功能
         
         if (to.matched.some(record => record.meta.requiresAuth)) {
-          console.log(getToken())
-          if (!getToken()) {
+          console.log(getToken("admin"))
+          if (!getToken("admin")) {
             this.$message("登录过期，请重新登录");
             this.$router.push({path: "/"});
-          }
+          } 
         }
+        if (to.matched.some(record => record.meta.requiresAuthT)) {
+          console.log("teacher-log")
+          console.log(getToken("teacher"))
+          if (!getToken('teacher')) {
+            this.$message("登录过期，请重新登录");
+            this.$router.push({path: "/"});
+          } 
+        }
+        if (to.matched.some(record => record.meta.requiresAuthS)) {
+          console.log("student-log")
+          console.log(getToken("student"))
+          if (!getToken('student')) {
+            this.$message("登录过期，请重新登录");
+            this.$router.push({path: "/"});
+          } 
+        }
+
       }
     },
   }

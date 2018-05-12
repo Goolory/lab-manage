@@ -1,6 +1,6 @@
 <template>
   <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px" class="demo-ruleForm login-container">
-    <h3 class="title">学生系统登录</h3>
+    <h3 class="title">教师登录</h3>
     <el-form-item prop="account">
       <el-input type="text" v-model="ruleForm2.account" auto-complete="off" placeholder="账号"></el-input>
     </el-form-item>
@@ -15,7 +15,7 @@
   </el-form>
 </template>
 <script>
-import { studentLogin } from '../../api/api'
+import { teacherLogin } from '../../api/api'
 import { setCookie } from '../../libs/commom'
 export default {
   data() {
@@ -44,9 +44,9 @@ export default {
         this.$refs.ruleForm2.validate((valid) => {
           if (valid) {
             this.logining = true;
-            var loginParams = { student_no: this.ruleForm2.account, password: this.ruleForm2.checkPass};
+            var loginParams = { teacher_no: this.ruleForm2.account, password: this.ruleForm2.checkPass};
             console.log(loginParams)
-            studentLogin(loginParams).then((res) => {
+            teacherLogin(loginParams).then((res) => {
               if (res.err_code == 1000) {
                 this.$message({message:"用户不存在",type:"error"})
                 this.logining = false
@@ -55,9 +55,9 @@ export default {
                 this.logining = false;
               } else if (res.err_code == 0) {
                 this.logining = false;
-                setCookie("student",res.data.access_token);
+                setCookie("teacher",res.data.access_token);
                 this.$store.state.isLogin = true
-                this.$router.push({path: '/S/home'})
+                this.$router.push({path: '/T/home'})
               }
             })
           }

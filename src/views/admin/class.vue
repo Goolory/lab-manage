@@ -2,18 +2,9 @@
     <section>
         <el-col :span="24" class="toolbar">
             <el-form :model="filters" ref="form" label-width="100px">
-                <el-form-item label="查询教师：" class="no-mbot">
-                    <el-col :span="6">
-                        <el-input v-model="filters.name" placeholder="姓名"></el-input>
-                    </el-col>
-                    <el-col :span="4" class="line">
-                        <el-button type="primary" @click="findTeacher">查询</el-button>
-                        <el-button type="primary" @click="allTeacher">全部</el-button>
-                    </el-col>
-                    <el-col :span="4" class="addS">
-                        <el-button type="primary" @click="handleAdd">新增教师</el-button>
-                    </el-col>
-                </el-form-item>
+                <el-col :span="4" class="addS">
+                    <el-button type="primary" @click="handleAdd">新增班级</el-button>
+                </el-col>
             </el-form>
         </el-col>
         <el-table :highlight-current-row="true" v-loading="listLoading" :data="tableData" @selection-change="selsChange" style="width: 100%;">
@@ -21,12 +12,9 @@
             </el-table-column>
             <el-table-column type="index" width="60" prop="id">
             </el-table-column>
-            <el-table-column prop="teacher_no" label="教工号" sortable width="120">
+            <el-table-column prop="class_name" label="班级名称" sortable >
             </el-table-column>
-            <el-table-column prop="teacher_name" label="教师姓名" sortable width="120">
-            </el-table-column>
-            <el-table-column prop="type" label="教师职称" :formatter="typeFormatter" width="120">
-            </el-table-column>
+            <el-table-column prop="teacher_name" label="科任老师" sortable>
             </el-table-column>
             <el-table-column prop="created_at" label="添加时间" :formatter="dateFormat " sortable>
             </el-table-column>
@@ -35,9 +23,9 @@
             </el-table-column>
             <el-table-column label="操作" width="150">
                 <template scope="scope">
-                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-                </template>
+                            <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                            <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+</template>
 			</el-table-column>
         </el-table>
 
@@ -48,51 +36,43 @@
 			</el-pagination>
 		</el-col>
         <!-- 编辑页面 -->
-        <el-dialog title="编辑教师" :visible.sync="editFormVisible">
+        <el-dialog title="编辑班级" :visible.sync="editFormVisible">
             <el-form ref="editForm" :model="editForm" label-width="80px">
-                <el-form-item label="教师编号(账号)" :label-width="addFormWidth">
-                    <el-input v-model="editForm.teacher_no" auto-complete="off"></el-input>
+                <el-form-item label="指派教师" :label-width="addFormWidth">
+                    <template>
+                        <el-select v-model="editValue" filterable placeholder="请选择">
+                            <el-option v-for="item in options" :key="item.id" :label="item.teacher_name" :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </template>
                 </el-form-item>
-                <el-form-item  label="修改密码" :label-width="addFormWidth">
-                    <el-input type="password" v-model="editForm.password" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="教师姓名" :label-width="addFormWidth">
-                    <el-input v-model="editForm.teacher_name" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="教授职称"  :label-width="addFormWidth">
-                    <el-radio-group v-model="editForm.type">
-                    <el-radio label="1">教授</el-radio>
-                    <el-radio label="2">讲师</el-radio>
-                    </el-radio-group>
+                <el-form-item label="班级名称" :label-width="addFormWidth">
+                    <el-input v-model="editForm.class_name" auto-complete="off"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="closeEdit">取消</el-button>
-                <el-button type="primary" @click="editTeacher">确定</el-button>
+                <el-button type="primary" @click="editClass">确定</el-button>
             </div>
         </el-dialog>
         <!-- 添加页面 -->
-        <el-dialog title="添加教师" :visible.sync="addFormVisible">
+        <el-dialog title="添加班级" :visible.sync="addFormVisible">
             <el-form ref="addForm" :model="addForm" label-width="80px">
-                <el-form-item label="教师编号(账号)" :label-width="addFormWidth">
-                    <el-input v-model="addForm.teacher_no" auto-complete="off"></el-input>
+                <el-form-item label="指派教师" :label-width="addFormWidth">
+                    <template>
+                        <el-select v-model="value" filterable placeholder="请选择">
+                            <el-option v-for="item in options" :key="item.id" :label="item.teacher_name" :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </template>
                 </el-form-item>
-                <el-form-item  label="登录密码" :label-width="addFormWidth">
-                    <el-input type="password" v-model="addForm.password" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="教师姓名" :label-width="addFormWidth">
-                    <el-input v-model="addForm.teacher_name" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="教授职称"  :label-width="addFormWidth">
-                    <el-radio-group v-model="addForm.type">
-                    <el-radio label="1">教授</el-radio>
-                    <el-radio label="2">讲师</el-radio>
-                    </el-radio-group>
+                <el-form-item label="班级名称" :label-width="addFormWidth">
+                    <el-input v-model="addForm.class_name" auto-complete="off"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="closeAdd">取消</el-button>
-                <el-button type="primary" @click="addTeacher">确定</el-button>
+                <el-button type="primary" @click="addClass">确定</el-button>
             </div>
         </el-dialog>
     </section>
@@ -100,16 +80,19 @@
 
 <script>
     import {
-        teacherList,
-        teacherAdd,
-        teacherDel,
-        teacherInfo,
-        teacherUpdate,
+        classDel,
+        classInfo,
+        classUpdate,
+        teacherAll,
+        classAdd,
+        classList,
     } from "../../api/api"
     import moment from 'moment'
     export default {
         data() {
             return {
+                options: [],
+                value:'',
                 total: 0,
                 sels: [], //列表选中列
                 listLoading: false,
@@ -127,124 +110,96 @@
                 addFormVisible: false,
                 addFormWidth: '120px',
                 addForm: {
-                    teacher_no: '',
-                    teacher_name: '',
-                    password: '',
-                    type: '1'
+                    teacher_id: '',
+                    class_name: ''
                 },
                 editFormVisible: false,
                 editForm: {
-                    id: 0,
-                    teacher_no: '',
-                    teacher_name: '',
-                    password: '',
-                    type: '1'
-                }
+                    id:'',
+                    teacher_id: '',
+                    class_name: ''
+                },
+                editValue: '',
             }
         },
         created() {
-            this.getTeacherList();
+            this.getClassList();
         },
         methods: {
-            allTeacher: function() {
-                this.filters.name = "";
-                this.getTeacherList();
-            },
-            findTeacher: function() {
-                this.getTeacherList();
-            },
             closeEdit: function() {
                 this.editFormVisible = false;
-                this.editForm.teacher_no = '';
-                this.editForm.teacher_name = '';
-                this.editForm.password = '';
-                this.editForm.type = '1';
+                this.editValue = '';
+                this.editForm.class_name = '';
             },
-            editTeacher: function(){
+            editClass: function() {
                 let _this = this;
-                if (_this.editForm.teacher_no == "") {
+                if (_this.editValue == "") {
                     _this.$message({
-                        message: '请填写教师编号',
+                        message: '请指派教师',
                         type: 'warning'
                     });
                     return false;
                 }
-                if (_this.editForm.password == "") {
+                if (_this.editForm.class_name == "") {
                     _this.$message({
-                        message: '请填写登录密码',
+                        message: '请填写班级',
                         type: 'warning'
                     });
                     return false;
                 }
-                if (_this.editForm.teacher_name == "") {
-                    _this.$message({
-                        message: '请填写教师姓名',
-                        type: 'warning'
-                    });
-                    return false;
-                }
-                console.log('....')
-                console.log(this.editForm)
+                
                 let par = {
                     id: this.editForm.id,
-                    teacher_no: this.editForm.teacher_no,
-                    teacher_name: this.editForm.teacher_name,
-                    type: Number(this.editForm.type)
+                    class_name: this.editForm.class_name,
+                    teacher_id: Number(this.editValue),
                 }
-                teacherUpdate(par).then((res) => {
+                classUpdate(par).then((res) => {
                     if (res.err_code == 0) {
-                        this.$message({message: '编辑成功', type:'success'})
+                        this.$message({
+                            message: '编辑成功',
+                            type: 'success'
+                        })
                         this.closeEdit()
-                        this.getTeacherList()
+                        this.getClassList()
                     } else {
-                        this.$message({message: '编辑失败', type: 'warning'})
+                        this.$message({
+                            message: '编辑失败',
+                            type: 'warning'
+                        })
                     }
-                    
                 })
-
             },
             closeAdd: function() {
                 this.addFormVisible = false;
-                this.addForm.teacher_no = '';
-                this.addForm.teacher_name = '';
-                this.addForm.password = '';
-                this.addForm.type = '1'
+                this.value = '';
+                this.addForm.class_name = '';
             },
-            addTeacher: function() {
+            addClass: function() {
                 let _this = this;
-                if (_this.addForm.teacher_no == "") {
+                if (_this.addForm.class_name == "") {
                     _this.$message({
-                        message: '请填写教师编号',
+                        message: '请填写班级名称',
                         type: 'warning'
                     });
                     return false;
                 }
-                if (_this.addForm.password == "") {
+                if (_this.value == "") {
                     _this.$message({
-                        message: '请填写登录密码',
+                        message: '请指派教师',
                         type: 'warning'
                     });
                     return false;
                 }
-                if (_this.addForm.teacher_name == "") {
-                    _this.$message({
-                        message: '请填写教师姓名',
-                        type: 'warning'
-                    });
-                    return false;
-                }
-                console.log(this.addForm);
                 let params = {
-                    teacher_no: this.addForm.teacher_no,
-                    teacher_name: this.addForm.teacher_name,
-                    password: this.addForm.password,
-                    type: Number(this.addForm.type)
+                    teacher_id: Number(this.value),
+                    class_name: this.addForm.class_name
                 }
-                teacherAdd(params).then(res => {
+                console.log(params)
+                classAdd(params).then(res => {
                     console.log(res);
                     if (res.err_code == 1002) {
                         this.$message({
-                            message: "用户已存在",
+                            message: "班级已存在",
                             type: "error"
                         });
                         this.addForm.teacher_no = '';
@@ -255,37 +210,32 @@
                             type: "success"
                         });
                         this.closeAdd();
-                        this.getTeacherList();
+                        this.getClassList();
                     }
                 })
             },
-            getTeacherList: function() {
+            getClassList: function() {
                 let params = {
-                    teacher_name: this.filters.name,
                     page: this.page,
                     page_size: this.pageSize
                 }
                 console.log(params)
-                teacherList(params).then(res => {
+                classList(params).then(res => {
                     console.log(res);
-                    this.tableData = res.data.teachers;
+                    this.tableData = res.data.class;
                     this.total = res.data.total;
                 })
             },
             handleAdd: function() {
                 this.addFormVisible = true;
+                teacherAll().then((res) => {
+                    if (res.err_code == 0) {
+                        this.options = res.data.teachers
+                    }
+                })
             },
             dateFormat(row, colum) {
                 return moment(row.created_at).format("YYYY-MM-DD HH:mm:ss");
-            },
-            typeFormatter(row, column) {
-                if (row.type == 1) {
-                    return "教授";
-                } else if (row.type == 2) {
-                    return "讲师";
-                } else {
-                    return ""
-                }
             },
             selsChange: function(sels) {
                 this.sels = sels;
@@ -293,10 +243,18 @@
             //显示编辑界面
             handleEdit: function(index, row) {
                 this.editFormVisible = true;
-                teacherInfo({id: row.id}).then((res) => {
+                teacherAll().then((res) => {
+                    if (res.err_code == 0) {
+                        this.options = res.data.teachers
+                    }
+                });
+                classInfo({
+                    id: row.id
+                }).then((res) => {
                     console.log(res.data)
                     if (res.err_code == 0) {
-                        this.editForm = res.data.teacher
+                        this.editForm = res.data.class
+                        this.editValue = res.data.teacher_id
                     }
                 })
                 console.log(row.id)
@@ -311,13 +269,13 @@
                         ids: [row.id]
                     };
                     console.log(para)
-                    teacherDel(para).then((res) => {
+                    classDel(para).then((res) => {
                         if (res.err_code == 0) {
                             this.$message({
                                 message: '删除成功',
                                 type: 'success'
                             });
-                            this.getTeacherList();
+                            this.getClassList();
                         } else {
                             this.$message.error('删除失败')
                         }
@@ -336,13 +294,13 @@
                     let para = {
                         ids: ids
                     };
-                    teacherDel(para).then((res) => {
+                    classDel(para).then((res) => {
                         if (res.err_code == 0) {
                             this.$message({
                                 message: '删除成功',
                                 type: 'success'
                             });
-                            this.getTeacherList();
+                            this.getClassList();
                         } else {
                             this.$message.error('删除失败')
                         }
@@ -352,8 +310,7 @@
             },
             handleCurrentChange(val) {
                 this.page = val;
-                console.log(val)
-                this.getTeacherList();
+                this.getClassList();
             },
         }
     }
@@ -376,7 +333,7 @@
         margin-bottom: 0px !important;
     }
     .addS {
-        text-align: right;
+        margin-left: 20px
     }
     .line {
         margin-left: 10px;

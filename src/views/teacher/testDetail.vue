@@ -30,7 +30,7 @@
                 <div class="card-title comment-title">答疑讨论区：</div>
                 <div class="text">
                     <el-container class="comment" v-for="(item, index) in commentList">
-                        <el-aside width="60px"><img src="@/assets/mo.png" width="50px" height="50px" class="img-round"></el-aside>
+                        <el-aside width="60px"><img  src="@/assets/mo.png" width="50px" height="50px" class="img-round"></el-aside>
                         <el-container>
                             <el-header style="height:20px">
                                 <div style="float:left">{{item.publisher}}</div>
@@ -61,10 +61,10 @@
 
 <script>
     import {
-        testSInfo,
+        testInfo,
         filesList,
-        commentSAdd,
-        commentSList
+        commentTAdd,
+        commentTList
     } from '../../api/api'
     import moment from 'moment'
     export default {
@@ -100,7 +100,7 @@
                 })
             },
             getTestInfo: function() {
-                testSInfo({
+                testInfo({
                     id: this.id
                 }).then(res => {
                     console.log(res)
@@ -122,7 +122,7 @@
                 this.getTestList();
             },
             getCommentList: function() {
-                commentSList({
+                commentTList({
                     theme_id: Number(this.id),
                     page: this.page,
                     page_size: this.pageSize
@@ -145,7 +145,7 @@
                     theme_id: Number(this.id),
                     content: this.form.content
                 }
-                commentSAdd(param).then(res => {
+                commentTAdd(param).then(res => {
                     if (res.err_code == 0) {
                         this.$message({
                             message: '提交成功',

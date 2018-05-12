@@ -2,32 +2,7 @@
     <div>
         <div class="card card-div" v-loading="listLoading">
             <el-card class="box-card card-bottom">
-                <div class="text item">
-                    <p class="title">{{data.title}}</p>
-                </div>
-            </el-card>
-            <el-card class="box-card card-bottom">
-                <div class="card-title">一、实验描述：</div>
-                <div class="text item content-card" v-html="data.describe">
-                </div>
-                <div class="card-title">二、实验内容：</div>
-                <div class="text item content-card" v-html="data.content">
-                </div>
-                <div class="card-title">三、实验附件：</div>
-                <div class="text item content-card">
-                    <li v-for="(item, index) in files">
-                        <i class="el-icon-document"></i><a :href="'http://localhost:8080/static'+item.rel_path" target="_blank" class="file-a">{{item.filename}}</a>
-                    </li>
-                </div>
-                <div class="card-title">四、教师意见：</div>
-                <div class="text item content-card" v-html="data.view">
-                </div>
-                <div class="card-title">五、课后作业：</div>
-                <div class="text item content-card" v-html="data.homework">
-                </div>
-            </el-card>
-            <el-card class="box-card card-bottom">
-                <div class="card-title comment-title">答疑讨论区：</div>
+                <div class="card-title comment-title">留言板：</div>
                 <div class="text">
                     <el-container class="comment" v-for="(item, index) in commentList">
                         <el-aside width="60px"><img src="@/assets/mo.png" width="50px" height="50px" class="img-round"></el-aside>
@@ -45,7 +20,7 @@
                     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="page" :page-size="pageSize" layout="total, prev, pager, next" :total="total">
                     </el-pagination>
                 </div>
-                <div class="card-title">回复：</div>
+                <div class="card-title">留言：</div>
                 <el-form ref="form" :model="form" label-width="80px">
                     <el-form-item>
                         <el-input type="textarea" :rows="5" placeholder="添加回复" v-model="form.content"></el-input>
@@ -58,17 +33,16 @@
         </div>
     </div>
 </template>
-
 <script>
-    import {
+import {
         testSInfo,
         filesList,
         commentSAdd,
         commentSList
     } from '../../api/api'
     import moment from 'moment'
-    export default {
-        data() {
+export default {
+   data() {
             return {
                 listLoading: false,
                 id: 0,
@@ -83,47 +57,12 @@
                 }
             }
         },
-        created() {
-            this.getParams();
-            this.getTestInfo();
+         created() {
             this.getCommentList();
         },
-        methods: {
-            getFileList: function() {
-                filesList({
-                    parent_id: this.id
-                }).then(response => {
-                    if (response.err_code == 0) {
-                        this.files = response.files;
-                        console.log(this.files)
-                    }
-                })
-            },
-            getTestInfo: function() {
-                testSInfo({
-                    id: this.id
-                }).then(res => {
-                    console.log(res)
-                    if (res.err_code == 0) {
-                        this.data = res.data.test
-                        this.getFileList();
-                    }
-                })
-            },
-            getParams: function() {
-                var routerParams = this.$route.query.id
-                this.id = routerParams
-            },
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
-            },
-            handleCurrentChange(val) {
-                this.page = val;
-                this.getTestList();
-            },
-            getCommentList: function() {
+         methods: {
+              getCommentList: function() {
                 commentSList({
-                    theme_id: Number(this.id),
                     page: this.page,
                     page_size: this.pageSize
                 }).then(res => {
@@ -133,7 +72,7 @@
                     }
                 })
             },
-            submit: function() {
+             submit: function() {
                 if (this.form.content == "") {
                     this.$message({
                         message: '请填写内容',
@@ -142,7 +81,6 @@
                     return false
                 }
                 let param = {
-                    theme_id: Number(this.id),
                     content: this.form.content
                 }
                 commentSAdd(param).then(res => {
@@ -155,21 +93,25 @@
                         this.getCommentList();
                     }
                 })
-            }
-        },
-        watch: {
-            '$route': 'getParams'
-        },
+            }, 
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                this.page = val;
+                this.getTestList();
+            },
+         },
         filters: {
             dateFormat(value) {
                 return moment(value).format("YYYY-MM-DD HH:mm:ss");
             },
         }
-    }
+}
 </script>
 
 <style scoped>
-    .comment-title {
+.comment-title {
         border-bottom: 1px solid #f4f4f4;
         padding-bottom: 30px;
     }
@@ -229,14 +171,9 @@
     .clearfix:after {
         clear: both;
     }
-    .note {
-        font-size: 12px;
-        font: #bfcbd9;
-        display: block;
-    }
+   
     .pagination {
         text-align: center;
     }
 </style>
-
 

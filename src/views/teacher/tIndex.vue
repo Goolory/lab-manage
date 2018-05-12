@@ -8,18 +8,18 @@
                 <el-tag v-else="item.state == 1" class="title-tag" type="success">已完成</el-tag>
             </div>
             <div class="describe-card">
-                <span>实验描述：</span>
-                <div class="text item" v-html="item.describe">
-                </div>
-                <el-row>
-                    <el-col :span="20">
-                        <span class="note">发布时间：{{item.created_at | dateFormat}}</span>
-                        <span class="note">发布人：{{item.teacher_name}}</span>
-                    </el-col>
-                    <el-col :span="4">
-                        <el-button class="round-btn" type="primary" size="mini" round @click="linkDetail(item.id)">查看详情</el-button>
-                    </el-col>
-                </el-row>
+            <span>实验描述：</span>
+            <div class="text item" v-html="item.describe">
+            </div>
+            <el-row>
+                <el-col :span="20">
+                    <span class="note">发布时间：{{item.created_at | dateFormat}}</span>
+                    <span class="note">发布人：{{item.teacher_name}}</span>
+                </el-col>
+                <el-col :span="4">
+                    <el-button class="round-btn" type="primary" size="mini" round @click="linkDetail(item.id)">查看详情</el-button>
+                </el-col>
+            </el-row>
             </div>
         </el-card>
         <!-- template实验列表 -->
@@ -32,7 +32,7 @@
 
 <script>
     import {
-        testSList
+        testList
     } from '../../api/api'
     import moment from 'moment'
     export default {
@@ -50,26 +50,25 @@
             this.getTestList()
         },
         methods: {
+            
             linkDetail: function(id) {
                 console.log(id)
                 this.$router.push({
-                    path: '/S/detail?id=' + id,
+                    path: '/T/detail?id=' + id,
                 })
             },
             getTestList: function() {
-                // this.userId = this.$store.state.studentId;
+                let userId = this.$store.state.teacherId;
                 let params = {
-                    // user_id: this.userId,
+                    user_id: userId,
                     page: this.page,
                     page_size: this.pageSize
                 }
                 console.log(params)
-                testSList(params).then(res => {
-                    if (res.err_code == 0) {
-                        console.log(res);
-                        this.listData = res.data.tests;
-                        this.total = res.data.total;
-                    }
+                testList(params).then(res => {
+                    console.log(res);
+                    this.listData = res.data.tests;
+                    this.total = res.data.total;
                 })
             },
             handleSizeChange(val) {
@@ -90,9 +89,9 @@
 
 
 <style scoped>
-    .describe-card {
-        margin: 0 50px
-    }
+.describe-card{
+    margin: 0 50px
+}
     .title-tag {
         float: right;
     }
@@ -102,6 +101,7 @@
     .card-bottom {
         /* margin-bottom: 20px; */
         margin: 0 80px 20px;
+
     }
     .text {
         font-size: 14px;

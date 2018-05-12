@@ -8,16 +8,33 @@ const studentHome = resolve => require(['../views/student/home.vue'], resolve)
 const expList = resolve => require(['../views/student/expList.vue'], resolve)
 const expDetail = resolve => require(['../views/student/expDetail.vue'], resolve)
 const forum = resolve => require(['../views/student/forum.vue'], resolve)
+const studentMessageBoard = resolve => require(['../views/student/messageBoard.vue'], resolve)
+
 const test2 = resolve => require(['@/components/Path.vue'], resolve)
 const adminLogin = resolve => require(['../views/admin/adminLogin.vue'], resolve)
 const adminHome = resolve => require(['../views/admin/home.vue'], resolve)
 const studentTable = resolve => require(['../views/admin/studentList.vue'], resolve)
 const teacherTable = resolve => require(['../views/admin/teacherList.vue'], resolve)
+const classTable = resolve => require(['../views/admin/class.vue'], resolve)
+
+const teacherLogin = resolve => require(['../views/teacher/teacherLogin.vue'], resolve)
+const teacherHome = resolve => require(['../views/teacher/home.vue'], resolve)
+const tIndex = resolve => require(['../views/teacher/tIndex.vue'], resolve)
+const addExp = resolve => require(['../views/teacher/addExp.vue'], resolve)
+const listExp = resolve => require(['../views/teacher/listExp.vue'], resolve)
+const addWork = resolve => require(['../views/teacher/addWork.vue'], resolve)
+const workList = resolve => require(['../views/teacher/workList.vue'], resolve)
+const testDetail = resolve => require(['../views/teacher/testDetail.vue'], resolve)
 
 
 export default new Router({
   routes: [
     
+    {
+      path: '/',
+      component: Path,
+      name:'/',
+    },
     {
       path: '/S/login',
       component: studentLogin,
@@ -25,22 +42,38 @@ export default new Router({
     },
 
     {
-      path: '/',
-      component: Path,
-      name:'/',
-    },
-    {
       path: '/S',
       component: studentHome,
       name: '学生实验室',
-      meta: {requiresAuth: true},
+      meta: {requiresAuthS: true},
       children:[
-        { path: '/list', component: expList, name: '实验列表'},
-        { path: '/detail', component: expDetail, name: '实验详情'},
+        { path: '/S/home', component: expList, name: '实验列表'},
+        { path: '/S/detail', component: expDetail, name: '实验详情'},
         { path: '/page2', component: test2, name: '课程作业'},
-        { path: '', name:'答疑讨论',component:layout, children:[
-          { path: '/forum', component: forum, name: '讨论区'}
-        ]}
+        { path: '/S/messageBoard', name:'留言板',component:studentMessageBoard}
+      ]
+    },
+    {
+      path:'/T/login',
+      component:teacherLogin,
+      name: '教师登录',
+    },
+    {
+      path: '/T',
+      component: teacherHome,
+      name: '教师管理',
+      meta: {requiresAuthT: true},
+      children: [
+        { path: '/T/home', component: tIndex, name: '实验列表'},
+        { path: '/T/detail', component: testDetail, name: '实验详情'},
+        { path: '', component: layout, name: '实验管理', children:[
+          { path: '/T/addExp', component: addExp, name: '创建实验'},
+          { path: '/T/list', component: listExp, name: "全部实验"}
+        ]},
+        { path: '', component: layout, name: '在线练习', children:[
+          { path: '/T/addWork', component: addWork, name: '布置任务'},
+          { path: '/T/workList', component: workList, name: "任务列表"}
+        ]},
       ]
     },
     {
@@ -56,7 +89,7 @@ export default new Router({
       children: [
         { path: '/M/list',meta: {requiresAuth: true}, component: expList, name: '实验列表'},
         { path: '/M/detail', component: expDetail, name: '实验详情'},
-        { path: '/page55', component: test2, name: '课程作业'},
+        { path: '/M/class', component: classTable, name: '班级管理'},
         { path: '', name:'用户管理',component:layout, children:[
           { path: '/M/studentList', component: studentTable, name: '学生管理'},
           { path: '/M/teacherList', component: teacherTable, name: '教师管理'}
