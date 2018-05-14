@@ -5,7 +5,7 @@
             <div slot="header" class="clearfix">
                 <span>{{item.title}}</span>
                 <el-tag v-if="item.state == 0" class="title-tag" type="success">新发布</el-tag>
-                <el-tag v-else="item.state == 1" class="title-tag" type="success">已完成</el-tag>
+                <el-tag v-else="item.state == 1" class="title-tag">已完成</el-tag>
             </div>
             <div class="describe-card">
             <span>实验描述：</span>

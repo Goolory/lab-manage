@@ -35,10 +35,9 @@
 </template>
 <script>
 import {
-        testSInfo,
         filesList,
-        commentSAdd,
-        commentSList
+        commentTAdd,
+        commentTList
     } from '../../api/api'
     import moment from 'moment'
 export default {
@@ -62,7 +61,7 @@ export default {
         },
          methods: {
               getCommentList: function() {
-                commentSList({
+                commentTList({
                     page: this.page,
                     page_size: this.pageSize
                 }).then(res => {
@@ -83,7 +82,7 @@ export default {
                 let param = {
                     content: this.form.content
                 }
-                commentSAdd(param).then(res => {
+                commentTAdd(param).then(res => {
                     if (res.err_code == 0) {
                         this.$message({
                             message: '提交成功',

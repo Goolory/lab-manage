@@ -5,19 +5,20 @@
       </el-table-column>
       <el-table-column type="index" width="60" prop="id">
       </el-table-column>
-      <el-table-column prop="title" label="名称">
+      <el-table-column prop="title" label="实验名称">
       </el-table-column>
-      <el-table-column prop="state" label="状态" :formatter="stateFormat">
+      <el-table-column prop="state" label="状态" :formatter="stateFormat" width="80" >
       </el-table-column>
       <el-table-column prop="describe" label="描述">
       </el-table-column>
       </el-table-column>
       <el-table-column prop="created_at" label="创建时间" :formatter="dateFormat">
       </el-table-column>
-      <el-table-column label="操作" width="150">
+      <el-table-column label="操作" width="250">
         <template scope="scope">
-                                <el-button size="small" @click="handleEdit(scope.$index, scope.row)">详情</el-button>
-                                <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+                                      <el-button v-if="scope.row.state == 0" size="mini" @click="handleEdit(scope.$index, scope.row)">完成</el-button>
+                                      <el-button size="mini" @click="linkDetail(scope.row.id)">详情</el-button>
+                                      <el-button type="danger" size="mini" @click="handleDel(scope.$index, scope.row)">删除</el-button>
 </template>
 			</el-table-column>
         </el-table>  
@@ -33,7 +34,9 @@
 <script>
   import moment from 'moment'
   import {
-    testList,testDel
+    testList,
+    testDel,
+    testUpdate
   } from '../../api/api'
   export default {
     data() {
@@ -50,8 +53,13 @@
     created() {
       this.getTestList()
     },
-    
     methods: {
+      linkDetail: function(id) {
+        console.log(id)
+        this.$router.push({
+          path: '/T/detail?id=' + id,
+        })
+      },
       getTestList: function() {
         let params = {
           user_id: this.userId,
@@ -65,7 +73,19 @@
           this.total = res.data.total;
         })
       },
-      handleEdit: function() {},
+      handleEdit: function(index, row) {
+        testUpdate({
+          id: row.id
+        }).then(res => {
+          if (res.err_code == 0) {
+            this.$message({
+              message: '更新成功',
+              type: 'success'
+            });
+            this.getTestList();
+          }
+        })
+      },
       //删除
       handleDel: function(index, row) {
         this.$confirm('确认删除该记录吗?', '提示', {

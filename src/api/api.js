@@ -64,6 +64,8 @@ export const classDel = (params) => ajax(host + '/admin/class/delete', params, "
 export const classUpdate = (params) => ajax(host + '/admin/class/update', params, "POST", "admin")
 export const classInfo = (params) => ajax(host + '/admin/class/info', params, "GET", "admin");
 export const classAll = (params) => ajax(host + '/admin/class/all', params, "GET", "admin")
+export const commentMList = (params) => ajax(host+'/admin/comment/list',params, "GET", "admin")
+export const commentDel = (params) => ajax(host + '/admin/comment/delete', params, "POST", "admin")
 
 export const studentAdd = (params) => ajax(host + '/admin/student/add', params, "POST", "admin")
 export const studentList = (params) => ajax(host + '/admin/student/list', params, "GET", "admin")
@@ -81,6 +83,13 @@ export const testInfo = (params) => ajax(host + '/teacher/test/info', params, "G
 export const filesList = (params) => ajax(host + '/getfiles', params, "GET", "teacher")
 export const commentTList = (params) => ajax(host+'/teacher/comment/list',params, "GET", "teacher")
 export const commentTAdd = (params) => ajax(host + '/teacher/comment/add', params, "POST", "teacher")
+export const testUpdate = (params) => ajax(host + '/teacher/test/update', params, "POST", "teacher")
+export const homeworkTList = (params) => ajax(host+'/teacher/homework/list',params, "GET", "teacher")
+export const questionTAdd = (params) => ajax(host + '/teacher/question/add', params, "POST", "teacher")
+export const quesionTList = (params) => ajax(host+'/teacher/question/list',params, "GET", "teacher")
+export const answerTList = (params) => ajax(host+'/teacher/answer/list',params, "GET", "teacher")
+
+
 
 export const studentLogin = (params) => ajax(host + '/student/login', params, "POST","student");
 export const userSInfo = (params) => ajax(host + '/student/info', params, "GET","student");
@@ -88,3 +97,6 @@ export const testSList = (params) => ajax(host + '/student/test/list', params, "
 export const testSInfo = (params) => ajax(host + '/student/test/info', params, "GET", "student")
 export const commentSList = (params) => ajax(host+'/student/comment/list',params, "GET", "student")
 export const commentSAdd = (params) => ajax(host + '/student/comment/add', params, "POST","student");
+export const homeworkAdd = (params) => ajax(host + "/student/homework/add", params, "POST", "student");
+export const quesionSList = (params) => ajax(host+'/student/question/list',params, "GET", "student")
+export const answerAdd = (params) => ajax(host + "/student/answer/add", params, "POST", "student");

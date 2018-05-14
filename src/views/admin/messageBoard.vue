@@ -11,7 +11,8 @@
                                 <div style="float:left">{{item.publisher}}</div>
                                 <div style="float:right">{{item.created_at | dateFormat}}</div>
                             </el-header>
-                            <el-main style="padding-top:5px; padding-bottom:20px">{{item.content}}</el-main>
+                            <el-main style="padding-top:5px; padding-bottom:5px">{{item.content}}</el-main>
+                            <el-footer style="height:20px;"><a href="#" title="删除"><i class="el-icon-delete" @click="deleted(item.id)"  style="float:right"></i></a></el-footer>
                         </el-container>
                     </el-container>
                 </div>
@@ -20,27 +21,19 @@
                     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="page" :page-size="pageSize" layout="total, prev, pager, next" :total="total">
                     </el-pagination>
                 </div>
-                <div class="card-title">留言：</div>
-                <el-form ref="form" :model="form" label-width="80px">
-                    <el-form-item>
-                        <el-input type="textarea" :rows="5" placeholder="添加回复" v-model="form.content"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="submit">提交</el-button>
-                    </el-form-item>
-                </el-form>
             </el-card>
         </div>
     </div>
 </template>
+
 <script>
-import {
-        commentSAdd,
-        commentSList
+    import {
+        commentMList,
+        commentDel
     } from '../../api/api'
     import moment from 'moment'
-export default {
-   data() {
+    export default {
+        data() {
             return {
                 listLoading: false,
                 id: 0,
@@ -50,17 +43,14 @@ export default {
                 total: 0,
                 page: 1,
                 pageSize: 10,
-                form: {
-                    content: ''
-                }
             }
         },
-         created() {
+        created() {
             this.getCommentList();
         },
-         methods: {
-              getCommentList: function() {
-                commentSList({
+        methods: {
+            getCommentList: function() {
+                commentMList({
                     page: this.page,
                     page_size: this.pageSize
                 }).then(res => {
@@ -70,28 +60,19 @@ export default {
                     }
                 })
             },
-             submit: function() {
-                if (this.form.content == "") {
-                    this.$message({
-                        message: '请填写内容',
-                        type: 'warning'
-                    })
-                    return false
-                }
-                let param = {
-                    content: this.form.content
-                }
-                commentSAdd(param).then(res => {
+            deleted: function(id) {
+                commentDel({
+                    id: id
+                }).then(res => {
                     if (res.err_code == 0) {
                         this.$message({
-                            message: '提交成功',
+                            message: '删除成功',
                             type: 'success'
-                        });
-                        this.form.content = ""
+                        })
                         this.getCommentList();
                     }
                 })
-            }, 
+            },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
             },
@@ -99,17 +80,17 @@ export default {
                 this.page = val;
                 this.getTestList();
             },
-         },
+        },
         filters: {
             dateFormat(value) {
                 return moment(value).format("YYYY-MM-DD HH:mm:ss");
             },
         }
-}
+    }
 </script>
 
 <style scoped>
-.comment-title {
+    .comment-title {
         border-bottom: 1px solid #f4f4f4;
         padding-bottom: 30px;
     }
@@ -169,7 +150,6 @@ export default {
     .clearfix:after {
         clear: both;
     }
-   
     .pagination {
         text-align: center;
     }
